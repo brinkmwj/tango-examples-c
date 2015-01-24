@@ -116,7 +116,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         	//introVideoView.setMediaController(mediaControls);
 
         	//set the uri of the video to be played
-        	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.kitkat));
+        	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animatic4));
 
         } catch (Exception e) {
         	Log.e("Error", e.getMessage());
@@ -128,12 +128,11 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                 //we also set an setOnPreparedListener in order to know when the video file is ready for playback
         introVideoView.setOnPreparedListener(new OnPreparedListener() {
 
-					@Override
-					public void onPrepared(MediaPlayer arg0) {
-						introVideoView.start();
-						
-					}
-                });
+		@Override
+		public void onPrepared(MediaPlayer arg0) {
+			introVideoView.start();
+		}
+    });
         introVideoView.setOnTouchListener(new OnTouchListener(){
 
 			@Override
