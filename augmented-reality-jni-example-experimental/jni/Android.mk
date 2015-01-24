@@ -27,6 +27,7 @@ LOCAL_SHARED_LIBRARIES := libtango-prebuilt
 LOCAL_CFLAGS    := -std=c++11
 LOCAL_SRC_FILES := jni/tango_augmented_reality.cpp \
                    jni/tango_data.cpp \
+                   jni/pointcloud.cpp \
                    ../tango-gl-renderer/ar_ruler.cpp \
                    ../tango-gl-renderer/axis.cpp \
                    ../tango-gl-renderer/cube.cpp \

@@ -30,6 +30,7 @@
 
 #include "tango_data.h"
 #include "video_overlay.h"
+#include "pointcloud.h"
 
 // Render camera's parent transformation.
 // This object is a pivot transformtion for render camera to rotate around.
@@ -58,6 +59,8 @@ Cube *cube;
 
 // Color camera preview.
 VideoOverlay *video_overlay;
+
+Pointcloud *pointcloud;
 
 // Single finger touch positional values.
 // First element in the array is x-axis touching position.
@@ -150,6 +153,7 @@ glm::mat4 oc_to_c_mat;
 
 // Opengl World with respect to Opengl Camera matrix.
 glm::mat4 ow_to_oc_mat;
+glm::mat4 ow_to_oc_mat_depth;
 
 // Color Camera image plane ratio.
 float image_plane_ratio;
@@ -196,6 +200,7 @@ bool SetupGraphics() {
   ar_grid = new Grid(0.1f, 6, 4);
   cube = new Cube();
   video_overlay = new VideoOverlay();
+  pointcloud = new Pointcloud();
 
   camera_type = CameraType::FIRST_PERSON;
   cam->SetParent(cam_parent_transform);
@@ -249,6 +254,8 @@ bool RenderFrame() {
 
   ow_to_oc_mat = ss_to_ow_mat * d_to_ss_mat * glm::inverse(d_to_imu_mat) *
                  c_to_imu_mat * oc_to_c_mat;
+  ow_to_oc_mat_depth = ss_to_ow_mat * TangoData::GetInstance().d_2_ss_mat_depth * glm::inverse(d_to_imu_mat) *
+                   c_to_imu_mat * oc_to_c_mat;
   glm::vec3 scale;
   GlUtil::DecomposeMatrix(ow_to_oc_mat, cc_position, cc_rotation, scale);
 
@@ -285,6 +292,12 @@ bool RenderFrame() {
 
     video_overlay->Render(projection_mat, view_mat);
   }
+
+  // Render point cloud based on depth buffer and depth frame transformation.
+    pointcloud->Render(
+        projection_mat, view_mat, ow_to_oc_mat_depth,
+        TangoData::GetInstance().depth_buffer_size * 3,
+        static_cast<float*>(TangoData::GetInstance().depth_buffer));
 
   ground->Render(projection_mat, view_mat);
   ar_grid->Render(projection_mat, view_mat);
