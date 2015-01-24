@@ -73,7 +73,7 @@ bool DanceSteps::createRandomPixie(){
 float pixie_wait_time = 10000.0f;
 float pixie_attack_time = 2000.0f;
 float pixie_hit_distance = 0.25f;
-float pixie_squash_distance = 1.0f;
+float pixie_squash_distance = 0.5f;
 
 void DanceSteps::squashPixie(){
 	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
@@ -121,9 +121,9 @@ void DanceSteps::UpdatePixies(){
 		pixie_queue.pop_front();
 	}
 
-	//Replenish pixies, if all dead
-	if(pixie_queue.size() < 2){
-		if(rand()%4 == 0){
+	//Replenish pixies, if dead
+	if(pixie_queue.size() < 20){
+		if(rand()%100 == 0){
 			createRandomPixie();
 		}
 	}
