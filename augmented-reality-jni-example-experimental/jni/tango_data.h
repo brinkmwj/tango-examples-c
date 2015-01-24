@@ -71,6 +71,7 @@ class TangoData {
     glm::mat4 d_2_ss_mat_depth;
 
   glm::vec3 tango_position;
+  glm::vec3 tango_position_depth;
   glm::quat tango_rotation;
   glm::mat4 d_to_imu_mat;
   glm::mat4 c_to_imu_mat;

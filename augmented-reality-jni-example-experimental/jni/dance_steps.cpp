@@ -38,6 +38,11 @@ DanceSteps::DanceSteps(){
 	for(int i=0;i<fh_size;i++){
 		floor_heights[i] = std::make_pair(0.0f,0.0f);
 	}
+
+	pixie_bit_this_turn = false;
+	pixie_missed_this_turn = false;
+	pixie_created_this_turn = false;
+	pixie_attacked_this_turn = false;
 }
 
 DanceSteps::~DanceSteps(){
@@ -56,6 +61,7 @@ bool DanceSteps::createRandomPixie(){
 					floor_heights[offset].first/floor_heights[offset].second,
 					minY + yoffset*squareWidth)),start_time);
 			pixie_queue.push_back(p);
+			pixie_created_this_turn = true;
 			return true;
 		}
 	}
@@ -63,28 +69,54 @@ bool DanceSteps::createRandomPixie(){
 	return false;
 }
 
+float pixie_wait_time = 10000.0f;
+float pixie_attack_time = 2000.0f;
+
 void DanceSteps::UpdatePixies(){
-	if(pixie_queue.size() < 2){
-		createRandomPixie();
+	double now = now_ms();
+	//update location of each pixie
+	for(int i=0;i<pixie_queue.size();i++){
+		if(now - pixie_queue[i].start_time < pixie_wait_time){
+			//do nothing
+			pixie_queue[i].cur_position = pixie_queue[i].start_position;
+		} else if (now - pixie_queue[i].start_time > pixie_wait_time+pixie_attack_time){
+			pixie_queue[i].is_dead = true;
+			pixie_missed_this_turn = true;
+		} else {
+			if(!pixie_queue[i].is_attacking){
+				pixie_queue[i].is_attacking = true;
+				pixie_attacked_this_turn = true;
+
+				//TODO
+				pixie_queue[i].attack_direction = glm::normalize(TangoData::GetInstance().tango_position_depth-pixie_queue[i].start_position);
+			}
+			float ratio = ((now - pixie_queue[i].start_time) - pixie_wait_time)/pixie_attack_time;
+			pixie_queue[i].cur_position = pixie_queue[i].start_position + pixie_queue[i].attack_direction*(ratio*8.0f);
+		}
 	}
 
-	double now = now_ms();
-	while(pixie_queue.size() > 0 && (now - pixie_queue[0].start_time) > 5000){
+	//Dispose dead pixies
+	while(pixie_queue.size() > 0 && pixie_queue[0].is_dead){
 		pixie_queue.pop_front();
+	}
+
+	//Replenish pixies, if all dead
+	if(pixie_queue.size() < 2){
+		createRandomPixie();
 	}
 }
 
 void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const  {
 	for(int i=0; i<pixie_queue.size(); i++){
 		//First, check the floor height of the pixie's position, make sure it is visible
-		int xindex = (pixie_queue[i].position.x - minX)/squareWidth;
-		int yindex = (pixie_queue[i].position.z - minY)/squareWidth;
+		int xindex = (pixie_queue[i].cur_position.x - minX)/squareWidth;
+		int yindex = (pixie_queue[i].cur_position.z - minY)/squareWidth;
 		int offset = xindex + yindex*fh_dim;
-		if(floor_heights[offset].second > 5.0f &&
-				(floor_heights[offset].first/floor_heights[offset].second) < pixie_queue[i].position.y + 0.1f ){
-			c->SetPosition(pixie_queue[i].position);
+		/*if((floor_heights[offset].second > 5.0f || pixie_queue[i].is_attacking)&&
+				(floor_heights[offset].first/floor_heights[offset].second) < pixie_queue[i].cur_position.y + 0.1f ){*/
+			c->SetPosition(pixie_queue[i].cur_position);
 			c->Render(projection_mat, view_mat);
-		}
+		//}
 	}
 }
 

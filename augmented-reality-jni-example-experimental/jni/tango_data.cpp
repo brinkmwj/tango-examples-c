@@ -425,7 +425,7 @@ void TangoData::UpdateXYZijData() {
 		  TangoData::GetInstance().c_to_imu_mat * GlUtil::oc_to_c_mat;
   //glm::mat4 mvp_mat = projection_mat * view_mat * model_mat * inverse_z_mat;
 
-
+  tango_position_depth = glm::vec3(tango_position.x,tango_position.z,-tango_position.y);
   for (uint32_t i = 0; i < depth_buffer_size; i+=3) {
 	  glm::vec4 orig_pt(depth_buffer[i],depth_buffer[i+1],depth_buffer[i+2],1.0);
 	  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
