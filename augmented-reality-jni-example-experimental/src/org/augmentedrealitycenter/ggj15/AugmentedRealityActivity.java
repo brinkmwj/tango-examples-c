@@ -96,10 +96,10 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
             appVersionString = " ";
         }
 
-        findViewById(R.id.reset).setOnClickListener(this);
-        findViewById(R.id.third).setOnClickListener(this);
-        findViewById(R.id.first).setOnClickListener(this);
-        findViewById(R.id.top).setOnClickListener(this);
+        //findViewById(R.id.reset).setOnClickListener(this);
+        //findViewById(R.id.third).setOnClickListener(this);
+        //findViewById(R.id.first).setOnClickListener(this);
+        //findViewById(R.id.top).setOnClickListener(this);
 
         new Thread(new Runnable() {
             @Override
@@ -133,7 +133,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.reset:
+        /*case R.id.reset:
             TangoJNINative.resetMotionTracking();
             break;
         case R.id.first:
@@ -144,7 +144,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
             break;
         case R.id.top:
             TangoJNINative.setCamera(2);
-            break;
+            break;*/
         }
     }
 
@@ -171,7 +171,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 
     public void onRadioButtonClicked(View view) {
         switch (view.getId()) {
-        case R.id.radio_world:
+        /*case R.id.radio_world:
             arElement = 1;
             break;
         case R.id.radio_cube:
@@ -182,13 +182,13 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
             break;
         case R.id.radio_fx:
             arElement = 4;
-            break;
+            break;*/
         }
     }
 
     public void onDirectionButtonClicked(View view) {
         switch (view.getId()) {
-        case R.id.radio_left:
+        /*case R.id.radio_left:
             interactionType = 1;
             break;
         case R.id.radio_right:
@@ -205,7 +205,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
             break;
         case R.id.radio_near:
             interactionType = 6;
-            break;
+            break;*/
         }
         if (arElement != 0) {
             TangoJNINative.updateARElement(arElement, interactionType);
