@@ -77,13 +77,13 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     
     public void onDrawFrame(GL10 gl) {
         TangoJNINative.render();
-        if(TangoJNINative.getPixieCreated()){
+        if(TangoJNINative.getPixieCreated() > 0){
         	playShortResource(R.raw.oot_navi_hey5);
         }
-        if(TangoJNINative.getPixieAttacked()){
+        if(TangoJNINative.getPixieAttacked() > 0){
         	playShortResource(R.raw.oot_navi_watchout5);
         }
-        if(TangoJNINative.getPixieMissed()){
+        if(TangoJNINative.getPixieMissed() > 0){
         	playShortResource(R.raw.oot_navi_in);
         	
         	if(r.nextFloat() < 0.05){
@@ -92,11 +92,11 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         		playShortResource(R.raw.whew);
         	}
         }
-        if(TangoJNINative.getPixieBit()){
+        if(TangoJNINative.getPixieBit() > 0){
         	playShortResource(R.raw.oot_navi_bonk);
         	playShortResource(R.raw.auuch);
         }
-        if(TangoJNINative.getPixieSquashed()){
+        if(TangoJNINative.getPixieSquashed() > 0){
         	playShortResource(R.raw.gotcha);
         	playShortResource(R.raw.squish);
         }

@@ -39,11 +39,11 @@ DanceSteps::DanceSteps(){
 		floor_heights[i] = std::make_pair(0.0f,0.0f);
 	}
 
-	pixie_bit_this_turn = false;
-	pixie_missed_this_turn = false;
-	pixie_created_this_turn = false;
-	pixie_attacked_this_turn = false;
-	pixie_squashed_this_turn = false;
+	pixie_bit_this_turn = 0;
+	pixie_missed_this_turn = 0;
+	pixie_created_this_turn = 0;
+	pixie_attacked_this_turn = 0;
+	pixie_squashed_this_turn = 0;
 }
 
 DanceSteps::~DanceSteps(){
@@ -62,7 +62,7 @@ bool DanceSteps::createRandomPixie(){
 					floor_heights[offset].first/floor_heights[offset].second,
 					minY + yoffset*squareWidth)),start_time);
 			pixie_queue.push_back(p);
-			pixie_created_this_turn = true;
+			pixie_created_this_turn += 1;
 			return true;
 		}
 	}
@@ -82,7 +82,7 @@ void DanceSteps::squashPixie(){
 				!pixie_queue[i].is_attacking &&
 				glm::length(player_position - pixie_queue[i].cur_position) < pixie_squash_distance){
 			pixie_queue[i].is_dead = true;
-			pixie_squashed_this_turn = true;
+			pixie_squashed_this_turn += 1;
 		}
 	}
 }
@@ -98,11 +98,11 @@ void DanceSteps::UpdatePixies(){
 			pixie_queue[i].cur_position = pixie_queue[i].start_position;
 		} else if (pixie_queue[i].is_dead == false && (now - pixie_queue[i].start_time) > pixie_wait_time+pixie_attack_time){
 			pixie_queue[i].is_dead = true;
-			pixie_missed_this_turn = true;
+			pixie_missed_this_turn += 1;
 		} else if (pixie_queue[i].is_dead == false) {
 			if(!pixie_queue[i].is_attacking){
 				pixie_queue[i].is_attacking = true;
-				pixie_attacked_this_turn = true;
+				pixie_attacked_this_turn += 1;
 
 				pixie_queue[i].attack_direction = glm::normalize(player_position-pixie_queue[i].start_position);
 			}
@@ -111,7 +111,7 @@ void DanceSteps::UpdatePixies(){
 			pixie_queue[i].cur_position = pixie_queue[i].start_position + pixie_queue[i].attack_direction*(ratio*8.0f);
 			if(glm::length(player_position - pixie_queue[i].cur_position) < pixie_hit_distance){
 				pixie_queue[i].is_dead = true;
-				pixie_bit_this_turn = true;
+				pixie_bit_this_turn += 1;
 			}
 		}
 	}

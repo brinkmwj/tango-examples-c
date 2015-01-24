@@ -53,11 +53,11 @@ public class TangoJNINative {
     
     public static native boolean getIsLocalized();
     
-    public static native boolean getPixieCreated();
-    public static native boolean getPixieBit();
-    public static native boolean getPixieMissed();
-    public static native boolean getPixieAttacked();
-    public static native boolean getPixieSquashed();
+    public static native int getPixieCreated();
+    public static native int getPixieBit();
+    public static native int getPixieMissed();
+    public static native int getPixieAttacked();
+    public static native int getPixieSquashed();
     
     public static native void squashPixie();
     

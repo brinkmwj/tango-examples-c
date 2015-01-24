@@ -306,10 +306,10 @@ bool RenderFrame() {
   }
 
   // Render point cloud based on depth buffer and depth frame transformation.
-    pointcloud->Render(
+   /* pointcloud->Render(
         projection_mat, view_mat, ow_to_oc_mat_depth,
         TangoData::GetInstance().depth_buffer_size * 3,
-        static_cast<float*>(TangoData::GetInstance().depth_buffer));
+        static_cast<float*>(TangoData::GetInstance().depth_buffer));*/
 
     dance_steps->Render(projection_mat,view_mat);
   //ground->Render(projection_mat, view_mat);
@@ -526,57 +526,57 @@ Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getIsLocalized(
   return is_localized;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jint JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieCreated(
     JNIEnv*, jobject) {
-	bool ret = false;
+	int ret = 0;
   if(dance_steps != nullptr){
 	  ret = dance_steps->pixie_created_this_turn;
-	  dance_steps->pixie_created_this_turn = false;
+	  dance_steps->pixie_created_this_turn = 0;
   }
   return ret;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jint JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieBit(
     JNIEnv*, jobject) {
-	bool ret = false;
+	int ret = 0;
   if(dance_steps != nullptr){
 	  ret = dance_steps->pixie_bit_this_turn;
-	  dance_steps->pixie_bit_this_turn = false;
+	  dance_steps->pixie_bit_this_turn = 0;
   }
   return ret;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jint JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieMissed(
     JNIEnv*, jobject) {
-	bool ret = false;
+	int ret = 0;
   if(dance_steps != nullptr){
 	  ret = dance_steps->pixie_missed_this_turn;
-	  dance_steps->pixie_missed_this_turn = false;
+	  dance_steps->pixie_missed_this_turn = 0;
   }
   return ret;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jint JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieAttacked(
     JNIEnv*, jobject) {
-	bool ret = false;
+	int ret = 0;
   if(dance_steps != nullptr){
 	  ret = dance_steps->pixie_attacked_this_turn;
-	  dance_steps->pixie_attacked_this_turn = false;
+	  dance_steps->pixie_attacked_this_turn = 0;
   }
   return ret;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jint JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieSquashed(
     JNIEnv*, jobject) {
-	bool ret = false;
+	int ret = 0;
   if(dance_steps != nullptr){
 	  ret = dance_steps->pixie_squashed_this_turn;
-	  dance_steps->pixie_squashed_this_turn = false;
+	  dance_steps->pixie_squashed_this_turn = 0;
   }
   return ret;
 }

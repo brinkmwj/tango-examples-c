@@ -34,11 +34,11 @@ public:
 	bool createRandomPixie();
 	void squashPixie();
 
-	bool pixie_bit_this_turn;
-	bool pixie_missed_this_turn;
-	bool pixie_created_this_turn;
-	bool pixie_attacked_this_turn;
-	bool pixie_squashed_this_turn;
+	int pixie_bit_this_turn;
+	int pixie_missed_this_turn;
+	int pixie_created_this_turn;
+	int pixie_attacked_this_turn;
+	int pixie_squashed_this_turn;
 
 	std::pair<float,float>* floor_heights;
 	std::deque<Pixie> pixie_queue;
