@@ -59,6 +59,8 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         mSounds.put(R.raw.whew, this.mShortPlayer.load(pContext, R.raw.whew, 1));
         mSounds.put(R.raw.auuch, this.mShortPlayer.load(pContext, R.raw.auuch, 1));
         mSounds.put(R.raw.missed_it, this.mShortPlayer.load(pContext, R.raw.missed_it, 1));
+        mSounds.put(R.raw.gotcha, this.mShortPlayer.load(pContext, R.raw.gotcha, 1));
+        mSounds.put(R.raw.squish, this.mShortPlayer.load(pContext, R.raw.squish, 1));
     }
 
     public void playShortResource(int piResource) {
@@ -93,6 +95,10 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         if(TangoJNINative.getPixieBit()){
         	playShortResource(R.raw.oot_navi_bonk);
         	playShortResource(R.raw.auuch);
+        }
+        if(TangoJNINative.getPixieSquashed()){
+        	playShortResource(R.raw.gotcha);
+        	playShortResource(R.raw.squish);
         }
     }
 

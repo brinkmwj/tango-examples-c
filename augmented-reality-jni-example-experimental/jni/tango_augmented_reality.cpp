@@ -570,11 +570,22 @@ Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieAttacked(
   return ret;
 }
 
+JNIEXPORT jboolean JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieSquashed(
+    JNIEnv*, jobject) {
+	bool ret = false;
+  if(dance_steps != nullptr){
+	  ret = dance_steps->pixie_squashed_this_turn;
+	  dance_steps->pixie_squashed_this_turn = false;
+  }
+  return ret;
+}
+
 JNIEXPORT void JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_squashPixie(
     JNIEnv*, jobject) {
   if(dance_steps != nullptr){
-
+	  dance_steps->squashPixie();
   }
 }
 

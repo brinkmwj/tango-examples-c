@@ -94,7 +94,17 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         arViewRenderer.activity = AugmentedRealityActivity.this;
         arViewRenderer.isAutoRecovery = true;
         arView.setRenderer(arViewRenderer);
+        arView.setOnTouchListener(new OnTouchListener(){
 
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				TangoJNINative.squashPixie();
+				return true;
+			}
+        	
+        });
+        
         tangoPoseStatusText = (TextView) findViewById(R.id.debug_info);
         introVideoView = (VideoView) findViewById(R.id.videoView1);
         if (mediaControls == null) {
@@ -129,9 +139,15 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				introVideoView.stopPlayback();
-				arView.setVisibility(View.VISIBLE);
-				return true;
+				if(introVideoView.getVisibility() == View.VISIBLE){
+					introVideoView.stopPlayback();
+					introVideoView.setVisibility(View.INVISIBLE);
+					arView.setVisibility(View.VISIBLE);
+					arView.requestFocus();
+					return true;
+				} else {
+					return false;
+				}
 			}
         	
         });
@@ -141,11 +157,11 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 			public void onCompletion(MediaPlayer arg0) {
 				// TODO Auto-generated method stub
 				arView.setVisibility(View.VISIBLE);
+				arView.requestFocus();
 			}
         	
         });
-
-
+        
         PackageInfo pInfo;
         try {
             pInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);

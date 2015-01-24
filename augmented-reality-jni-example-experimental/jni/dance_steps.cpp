@@ -43,6 +43,7 @@ DanceSteps::DanceSteps(){
 	pixie_missed_this_turn = false;
 	pixie_created_this_turn = false;
 	pixie_attacked_this_turn = false;
+	pixie_squashed_this_turn = false;
 }
 
 DanceSteps::~DanceSteps(){
@@ -72,6 +73,19 @@ bool DanceSteps::createRandomPixie(){
 float pixie_wait_time = 10000.0f;
 float pixie_attack_time = 2000.0f;
 float pixie_hit_distance = 0.25f;
+float pixie_squash_distance = 1.0f;
+
+void DanceSteps::squashPixie(){
+	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
+	for(int i=0;i<pixie_queue.size();i++){
+		if(!pixie_queue[i].is_dead &&
+				!pixie_queue[i].is_attacking &&
+				glm::length(player_position - pixie_queue[i].cur_position) < pixie_squash_distance){
+			pixie_queue[i].is_dead = true;
+			pixie_squashed_this_turn = true;
+		}
+	}
+}
 
 void DanceSteps::UpdatePixies(){
 	double now = now_ms();
@@ -109,7 +123,9 @@ void DanceSteps::UpdatePixies(){
 
 	//Replenish pixies, if all dead
 	if(pixie_queue.size() < 2){
-		createRandomPixie();
+		if(rand()%4 == 0){
+			createRandomPixie();
+		}
 	}
 }
 
@@ -119,11 +135,10 @@ void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_m
 		int xindex = (pixie_queue[i].cur_position.x - minX)/squareWidth;
 		int yindex = (pixie_queue[i].cur_position.z - minY)/squareWidth;
 		int offset = xindex + yindex*fh_dim;
-		/*if((floor_heights[offset].second > 5.0f || pixie_queue[i].is_attacking)&&
-				(floor_heights[offset].first/floor_heights[offset].second) < pixie_queue[i].cur_position.y + 0.1f ){*/
+		if(!pixie_queue[i].is_dead){
 			c->SetPosition(pixie_queue[i].cur_position);
 			c->Render(projection_mat, view_mat);
-		//}
+		}
 	}
 }
 

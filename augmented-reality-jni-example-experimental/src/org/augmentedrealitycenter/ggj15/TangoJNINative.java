@@ -57,11 +57,16 @@ public class TangoJNINative {
     public static native boolean getPixieBit();
     public static native boolean getPixieMissed();
     public static native boolean getPixieAttacked();
-
+    public static native boolean getPixieSquashed();
+    
+    public static native void squashPixie();
+    
     public static native void updateARElement(int arElement, int interactionType);
 
     public static native float startSetCameraOffset();
 
     public static native float setCameraOffset(float rotX, float rotY, float zDistance);
+
+	
 }
 
