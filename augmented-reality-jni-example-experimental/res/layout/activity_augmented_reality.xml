@@ -6,7 +6,8 @@
         android:id="@+id/surfaceview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="top" />
+        android:layout_gravity="top"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/debug_info"
@@ -17,5 +18,13 @@
         android:paddingLeft="5dp"
         android:paddingTop="55dp"
         android:visibility="invisible" />
+
+    <VideoView
+        android:id="@+id/videoView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="28dp" />
   	
 </RelativeLayout>

@@ -21,14 +21,22 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 /**
  * Main activity shows augmented reality scene.
@@ -41,6 +49,8 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 
     private GLSurfaceView arView;
     private TextView tangoPoseStatusText;
+    private VideoView introVideoView;
+    private MediaController mediaControls;
 
     private float[] touchStartPos = new float[2];
     private float[] touchCurPos = new float[2];
@@ -86,6 +96,55 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         arView.setRenderer(arViewRenderer);
 
         tangoPoseStatusText = (TextView) findViewById(R.id.debug_info);
+        introVideoView = (VideoView) findViewById(R.id.videoView1);
+        if (mediaControls == null) {
+        	mediaControls = new MediaController(this);
+        }
+
+        try {
+        	//set the media controller in the VideoView
+        	//introVideoView.setMediaController(mediaControls);
+
+        	//set the uri of the video to be played
+        	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.kitkat));
+
+        } catch (Exception e) {
+        	Log.e("Error", e.getMessage());
+
+        	e.printStackTrace();
+
+        }
+        introVideoView.requestFocus();
+                //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+        introVideoView.setOnPreparedListener(new OnPreparedListener() {
+
+					@Override
+					public void onPrepared(MediaPlayer arg0) {
+						introVideoView.start();
+						
+					}
+                });
+        introVideoView.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				introVideoView.stopPlayback();
+				arView.setVisibility(View.VISIBLE);
+				return true;
+			}
+        	
+        });
+        introVideoView.setOnCompletionListener(new OnCompletionListener(){
+
+			@Override
+			public void onCompletion(MediaPlayer arg0) {
+				// TODO Auto-generated method stub
+				arView.setVisibility(View.VISIBLE);
+			}
+        	
+        });
+
 
         PackageInfo pInfo;
         try {
