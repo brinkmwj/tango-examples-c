@@ -19,6 +19,18 @@ const float maxY = 2.0;
 const int fh_dim = (int)((maxX-minX)/squareWidth);
 const int fh_size = fh_dim*fh_dim;
 
+#include <time.h>
+
+// from android samples
+/* return current time in milliseconds */
+static double now_ms(void) {
+
+    struct timespec res;
+    clock_gettime(CLOCK_REALTIME, &res);
+    return 1000.0 * res.tv_sec + (double) res.tv_nsec / 1e6;
+
+}
+
 DanceSteps::DanceSteps(){
 	c = new Cube();
 	c->SetScale(kCubeScale);
@@ -33,22 +45,43 @@ DanceSteps::~DanceSteps(){
 	delete[] floor_heights;
 }
 
-void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const {
-	LOGI("Start render");
-	for(int j=0;j<fh_dim;j++){
-		for(int i=0;i<fh_dim;i++){
-			int offset = j*fh_dim + i;
-			if(offset >= 0 && offset < fh_size && floor_heights[offset].second >= 1.0f){
-				c->SetPosition(glm::vec3(minX + i*squareWidth,
+bool DanceSteps::createRandomPixie(){
+	double start_time = now_ms();
+	for(int i=0; i<10; i++) {	//Make 10 tries, then give up
+		int xoffset = rand()%fh_dim;
+		int yoffset = rand()%fh_dim;
+		int offset = xoffset + yoffset*fh_dim;
+		if(floor_heights[offset].second >= 5.0f){
+			Pixie p(glm::vec3(glm::vec3(minX + xoffset*squareWidth,
 					floor_heights[offset].first/floor_heights[offset].second,
-					minY + j*squareWidth));
-
-				c->Render(projection_mat, view_mat);
-			}
+					minY + yoffset*squareWidth)),start_time);
+			pixie_queue.push_back(p);
+			return true;
 		}
 	}
-	LOGI("Finish render");
 
+	return false;
+}
+
+void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat)  {
+	if(pixie_queue.size() < 2){
+		createRandomPixie();
+	}
+	for(int i=0; i<pixie_queue.size(); i++){
+		//First, check the floor height of the pixie's position, make sure it is visible
+		int xindex = (pixie_queue[i].position.x - minX)/squareWidth;
+		int yindex = (pixie_queue[i].position.z - minY)/squareWidth;
+		int offset = xindex + yindex*fh_dim;
+		if(floor_heights[offset].second > 5.0f &&
+				(floor_heights[offset].first/floor_heights[offset].second) < pixie_queue[i].position.y + 0.1f ){
+			c->SetPosition(pixie_queue[i].position);
+			c->Render(projection_mat, view_mat);
+		}
+	}
+	double now = now_ms();
+	while(pixie_queue.size() > 0 && (now - pixie_queue[0].start_time) > 5000){
+		pixie_queue.pop_front();
+	}
 }
 
 void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
