@@ -47,12 +47,24 @@ class TangoData {
   bool GetIntrinsics();
   bool GetExtrinsics();
   const char* getStatusStringFromStatusCode(TangoPoseStatusType status);
+  void UpdateXYZijData();
 
+  pthread_mutex_t xyzij_mutex;
   pthread_mutex_t pose_mutex;
   pthread_mutex_t event_mutex;
+  float depth_average_length;
+    float depth_frame_delta_time;
+  uint32_t max_vertex_count;
+
+  // Device to start service matrix.
+    glm::mat4 d_2_ss_mat_depth;
 
   glm::vec3 tango_position;
   glm::quat tango_rotation;
+
+  float* depth_buffer;
+    uint32_t depth_buffer_size;
+    bool is_xyzij_dirty;
 
   int status_count[3];
   double timestamp;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.projecttango.experiments.nativeaugmentedreality;
+package org.augmentedrealitycenter.ggj15;
 
 /**
  * Interfaces between C and Java.

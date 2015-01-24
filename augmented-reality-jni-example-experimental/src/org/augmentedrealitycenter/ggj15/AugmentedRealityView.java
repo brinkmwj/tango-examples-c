@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.projecttango.experiments.nativeaugmentedreality;
+package org.augmentedrealitycenter.ggj15;
 
 import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.projecttango.experiments.nativeaugmentedreality"
+    package="org.augmentedrealitycenter.ggj15"
     android:versionCode="0"
     android:versionName="0" >
 
@@ -21,9 +21,10 @@
             android:name="com.projecttango.libtango_device" 
             android:required="true" />
         <activity
-            android:name="com.projecttango.experiments.nativeaugmentedreality.AugmentedRealityActivity"
+            android:name="org.augmentedrealitycenter.ggj15.AugmentedRealityActivity"
             android:screenOrientation="landscape"
-            android:label="@string/menu_name" >
+            android:label="@string/menu_name" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
