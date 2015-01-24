@@ -23,6 +23,7 @@ TangoData::TangoData()
       tango_rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)),
       config_(nullptr) {
 	is_xyzij_dirty = false;
+	floor_height = 0.0f;
 }
 
 // This is called when new pose updates become available. Pair was set to start-
@@ -411,13 +412,16 @@ void TangoData::UpdateXYZijData() {
 		  TangoData::GetInstance().c_to_imu_mat * GlUtil::oc_to_c_mat;
   //glm::mat4 mvp_mat = projection_mat * view_mat * model_mat * inverse_z_mat;
 
+  floor_height = 0.0f;
   for (uint32_t i = 0; i < depth_buffer_size; i+=3) {
 	  glm::vec4 orig_pt(depth_buffer[3*i],depth_buffer[3*i+1],depth_buffer[3*i+2],1.0);
-	  		  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
+	  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
+	 floor_height += xformed.y;
 	  		  /*points_in_world[(piw_front + 3*i)%piw_size] = xformed.x;
 	  		  points_in_world[(piw_front +3*i+1)%piw_size] = xformed.y;
 	  		  points_in_world[(piw_front +3*i+2)%piw_size] = xformed.z;*/
   }
+  floor_height /= (depth_buffer_size/3);
 
 
   // Reset xyz_ij dirty flag.

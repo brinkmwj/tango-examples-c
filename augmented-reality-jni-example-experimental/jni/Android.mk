@@ -28,6 +28,7 @@ LOCAL_CFLAGS    := -std=c++11
 LOCAL_SRC_FILES := jni/tango_augmented_reality.cpp \
                    jni/tango_data.cpp \
                    jni/pointcloud.cpp \
+                   jni/dance_steps.cpp \
                    ../tango-gl-renderer/ar_ruler.cpp \
                    ../tango-gl-renderer/axis.cpp \
                    ../tango-gl-renderer/cube.cpp \
