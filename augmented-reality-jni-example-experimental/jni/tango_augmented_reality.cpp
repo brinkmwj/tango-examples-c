@@ -571,6 +571,14 @@ Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieAttacked(
 }
 
 JNIEXPORT void JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_squashPixie(
+    JNIEnv*, jobject) {
+  if(dance_steps != nullptr){
+
+  }
+}
+
+JNIEXPORT void JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_resetMotionTracking(
     JNIEnv*, jobject) {
   ResetAR();

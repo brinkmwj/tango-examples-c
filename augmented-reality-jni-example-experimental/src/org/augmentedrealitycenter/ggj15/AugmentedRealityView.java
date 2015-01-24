@@ -17,6 +17,7 @@
 package org.augmentedrealitycenter.ggj15;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -37,9 +38,12 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     private HashMap mSounds = new HashMap();
     private Context pContext;
     
+    private Random r;
+    
     public AugmentedRealityView(Context applicationContext) {
 		// TODO Auto-generated constructor stub
     	pContext = applicationContext;
+    	r = new Random();
 	}
 
 	public void setupSoundPoolPlayer()
@@ -52,6 +56,9 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         mSounds.put(R.raw.oot_navi_in, this.mShortPlayer.load(pContext, R.raw.oot_navi_in, 1));
         mSounds.put(R.raw.oot_navi_out, this.mShortPlayer.load(pContext, R.raw.oot_navi_out, 1));
         mSounds.put(R.raw.oot_navi_watchout5, this.mShortPlayer.load(pContext, R.raw.oot_navi_watchout5, 1));
+        mSounds.put(R.raw.whew, this.mShortPlayer.load(pContext, R.raw.whew, 1));
+        mSounds.put(R.raw.auuch, this.mShortPlayer.load(pContext, R.raw.auuch, 1));
+        mSounds.put(R.raw.missed_it, this.mShortPlayer.load(pContext, R.raw.missed_it, 1));
     }
 
     public void playShortResource(int piResource) {
@@ -76,9 +83,16 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         }
         if(TangoJNINative.getPixieMissed()){
         	playShortResource(R.raw.oot_navi_in);
+        	
+        	if(r.nextFloat() < 0.05){
+        		playShortResource(R.raw.missed_it);
+        	} else {
+        		playShortResource(R.raw.whew);
+        	}
         }
         if(TangoJNINative.getPixieBit()){
         	playShortResource(R.raw.oot_navi_bonk);
+        	playShortResource(R.raw.auuch);
         }
     }
 

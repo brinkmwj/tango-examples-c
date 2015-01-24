@@ -71,27 +71,34 @@ bool DanceSteps::createRandomPixie(){
 
 float pixie_wait_time = 10000.0f;
 float pixie_attack_time = 2000.0f;
+float pixie_hit_distance = 0.25f;
 
 void DanceSteps::UpdatePixies(){
 	double now = now_ms();
+	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
+
 	//update location of each pixie
 	for(int i=0;i<pixie_queue.size();i++){
 		if(now - pixie_queue[i].start_time < pixie_wait_time){
 			//do nothing
 			pixie_queue[i].cur_position = pixie_queue[i].start_position;
-		} else if (now - pixie_queue[i].start_time > pixie_wait_time+pixie_attack_time){
+		} else if (pixie_queue[i].is_dead == false && (now - pixie_queue[i].start_time) > pixie_wait_time+pixie_attack_time){
 			pixie_queue[i].is_dead = true;
 			pixie_missed_this_turn = true;
-		} else {
+		} else if (pixie_queue[i].is_dead == false) {
 			if(!pixie_queue[i].is_attacking){
 				pixie_queue[i].is_attacking = true;
 				pixie_attacked_this_turn = true;
 
-				//TODO
-				pixie_queue[i].attack_direction = glm::normalize(TangoData::GetInstance().tango_position_depth-pixie_queue[i].start_position);
+				pixie_queue[i].attack_direction = glm::normalize(player_position-pixie_queue[i].start_position);
 			}
+
 			float ratio = ((now - pixie_queue[i].start_time) - pixie_wait_time)/pixie_attack_time;
 			pixie_queue[i].cur_position = pixie_queue[i].start_position + pixie_queue[i].attack_direction*(ratio*8.0f);
+			if(glm::length(player_position - pixie_queue[i].cur_position) < pixie_hit_distance){
+				pixie_queue[i].is_dead = true;
+				pixie_bit_this_turn = true;
+			}
 		}
 	}
 
