@@ -28,7 +28,7 @@ static const char kVertexShader[] =
 
 static const char kFragmentShader[] = "varying vec4 v_color;\n"
     "void main() {\n"
-    "  gl_FragColor = vec4(v_color);\n"
+    "  gl_FragColor = vec4(1.0f,1.0f,1.0f,0.25f);\n"
     "}\n";
 
 static const glm::mat4 inverse_z_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
@@ -66,8 +66,10 @@ void Pointcloud::Render(glm::mat4 projection_mat, glm::mat4 view_mat,
   glEnableVertexAttribArray(attrib_vertices_);
   glVertexAttribPointer(attrib_vertices_, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glDrawArrays(GL_POINTS, 0, 3 * depth_buffer_size);
+  glDisable(GL_BLEND);
 
   // Unlock xyz_ij mutex.
   pthread_mutex_unlock(&TangoData::GetInstance().xyzij_mutex);

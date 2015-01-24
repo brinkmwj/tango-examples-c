@@ -111,11 +111,11 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 boolean isLocalized = TangoJNINative.getIsLocalized();
-                                if(isLocalized) {
+                                /*if(isLocalized) {
                                     findViewById(R.id.reset).setVisibility(View.GONE);
                                 } else {
                                     findViewById(R.id.reset).setVisibility(View.VISIBLE);
-                                }
+                                }*/
                                 tangoPoseStatusText.setText(
                                     "Service Version:" + TangoJNINative.getVersionNumber() +
                                     "\nApp Version:" + appVersionString +

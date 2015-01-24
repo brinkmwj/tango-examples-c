@@ -417,7 +417,7 @@ void TangoData::UpdateXYZijData() {
 
   // Reset xyz_ij dirty flag.
   is_xyzij_dirty = false;
-  LOGI("Updated XYZ");
+  //LOGI("Updated XYZ");
   pthread_mutex_unlock(&xyzij_mutex);
 }
 

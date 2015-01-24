@@ -299,9 +299,9 @@ bool RenderFrame() {
         TangoData::GetInstance().depth_buffer_size * 3,
         static_cast<float*>(TangoData::GetInstance().depth_buffer));
 
-  ground->Render(projection_mat, view_mat);
-  ar_grid->Render(projection_mat, view_mat);
-  cube->Render(projection_mat, view_mat);
+  //ground->Render(projection_mat, view_mat);
+  //ar_grid->Render(projection_mat, view_mat);
+  //cube->Render(projection_mat, view_mat);
   return true;
 }
 

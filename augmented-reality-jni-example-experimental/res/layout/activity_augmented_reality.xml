@@ -24,7 +24,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
-        android:text="@string/reset" />
+        android:text="@string/reset"
+        android:visibility="invisible" />
 
         <Button
             android:id="@+id/first"
@@ -36,7 +37,9 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:paddingRight="5dp"
-            android:text="@string/first_person_cam" />
+            android:text="@string/first_person_cam"
+            android:visibility="invisible" />
+
         <Button
             android:id="@+id/third"
             android:layout_width="100dp"
@@ -46,7 +49,9 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:paddingRight="5dp"
-            android:text="@string/third_person_cam" />
+            android:text="@string/third_person_cam"
+            android:visibility="invisible" />
+
         <Button
             android:id="@+id/top"
             android:layout_width="100dp"
@@ -55,7 +60,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:paddingRight="5dp"
-            android:text="@string/top_down_cam" />
+            android:text="@string/top_down_cam"
+            android:visibility="invisible" />
     
     <RadioGroup
 	    android:layout_width="fill_parent"
