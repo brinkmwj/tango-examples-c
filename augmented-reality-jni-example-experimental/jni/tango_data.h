@@ -27,7 +27,18 @@
 #include "tango-gl-renderer/gl_util.h"
 
 const int kVersionStringLength = 27;
-
+// Opengl camera to color camera matrix.
+const glm::mat4 oc_2_c_mat =
+    glm::mat4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+              -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+// Start service to opengl world matrix.
+const glm::mat4 ss_2_ow_mat =
+    glm::mat4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+              0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+static const glm::mat4 inverse_z_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
+                                                 0.0f, -1.0f, 0.0f, 0.0f,
+                                                 0.0f, 0.0f, -1.0f, 0.0f,
+                                                 0.0f, 0.0f, 0.0f, 1.0f);
 class TangoData {
  public:
   static TangoData& GetInstance() {
@@ -61,6 +72,8 @@ class TangoData {
 
   glm::vec3 tango_position;
   glm::quat tango_rotation;
+  glm::mat4 d_to_imu_mat;
+  glm::mat4 c_to_imu_mat;
 
   float* depth_buffer;
     uint32_t depth_buffer_size;

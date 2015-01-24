@@ -172,6 +172,9 @@ void SetupExtrinsics() {
   c_to_imu_mat = glm::translate(glm::mat4(1.0f),
                                 TangoData::GetInstance().c_to_imu_position) *
                  glm::mat4_cast(TangoData::GetInstance().c_to_imu_rotation);
+
+  TangoData::GetInstance().c_to_imu_mat = c_to_imu_mat;
+  TangoData::GetInstance().d_to_imu_mat = d_to_imu_mat;
 }
 
 // Setup projection matrix in first person view from color camera intrinsics.

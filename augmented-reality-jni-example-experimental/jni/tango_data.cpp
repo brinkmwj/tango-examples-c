@@ -384,14 +384,7 @@ void TangoData::UpdateXYZijData() {
 
   // Calculating average depth for debug display.
   float total_z = 0.0f;
-  for (uint32_t i = 0; i < depth_buffer_size; ++i) {
-    // The memory layout is x,y,z,x,y,z. We are accumulating
-    // all of the z value.
-    total_z += depth_buffer[i * 3 + 2];
-  }
-  if (depth_buffer_size != 0) {
-    depth_average_length = total_z / static_cast<float>(depth_buffer_size);
-  }
+
 
   // Query pose at the depth frame's timestamp.
   // Note: This function is querying pose from pose buffer inside
@@ -414,6 +407,18 @@ void TangoData::UpdateXYZijData() {
   // Note: this is the pose transformation for depth frame.
   d_2_ss_mat_depth =
       glm::translate(glm::mat4(1.0f), translation) * glm::mat4_cast(rotation);
+  glm::mat4 model_mat = GlUtil::ss_to_ow_mat * TangoData::GetInstance().d_2_ss_mat_depth * glm::inverse(TangoData::GetInstance().d_to_imu_mat) *
+		  TangoData::GetInstance().c_to_imu_mat * GlUtil::oc_to_c_mat;
+  //glm::mat4 mvp_mat = projection_mat * view_mat * model_mat * inverse_z_mat;
+
+  for (uint32_t i = 0; i < depth_buffer_size; i+=3) {
+	  glm::vec4 orig_pt(depth_buffer[3*i],depth_buffer[3*i+1],depth_buffer[3*i+2],1.0);
+	  		  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
+	  		  /*points_in_world[(piw_front + 3*i)%piw_size] = xformed.x;
+	  		  points_in_world[(piw_front +3*i+1)%piw_size] = xformed.y;
+	  		  points_in_world[(piw_front +3*i+2)%piw_size] = xformed.z;*/
+  }
+
 
   // Reset xyz_ij dirty flag.
   is_xyzij_dirty = false;

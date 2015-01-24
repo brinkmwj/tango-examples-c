@@ -31,11 +31,11 @@ static const char kFragmentShader[] = "varying vec4 v_color;\n"
     "  gl_FragColor = vec4(1.0f,1.0f,1.0f,0.25f);\n"
     "}\n";
 
-static const glm::mat4 inverse_z_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
+/*static const glm::mat4 inverse_z_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
                                                  0.0f, -1.0f, 0.0f, 0.0f,
                                                  0.0f, 0.0f, -1.0f, 0.0f,
                                                  0.0f, 0.0f, 0.0f, 1.0f);
-
+*/
 Pointcloud::Pointcloud() {
   glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
   shader_program_ = GlUtil::CreateProgram(kVertexShader, kFragmentShader);
