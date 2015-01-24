@@ -15,6 +15,16 @@
  */
 
 #include "tango_data.h"
+
+#include "tango-gl-renderer/axis.h"
+#include "tango-gl-renderer/camera.h"
+#include "tango-gl-renderer/cube.h"
+#include "tango-gl-renderer/frustum.h"
+#include "tango-gl-renderer/gl_util.h"
+#include "tango-gl-renderer/grid.h"
+#include "tango-gl-renderer/trace.h"
+#include "dance_steps.h"
+
 static float prev_depth_timestamp = 0.0f;
 const float kSecondToMillisecond = 1000.0f;
 
@@ -23,7 +33,6 @@ TangoData::TangoData()
       tango_rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)),
       config_(nullptr) {
 	is_xyzij_dirty = false;
-	floor_height = 0.0f;
 }
 
 // This is called when new pose updates become available. Pair was set to start-
@@ -162,6 +171,7 @@ bool TangoData::SetConfig(bool is_auto_recovery) {
     // max_vertex_count is the vertices count, max_vertex_count*3 is
     // the actual float buffer size.
     depth_buffer = new float[3 * max_vertex_count];
+    points_in_world = new float[3 * max_vertex_count];
 
   // Attach the onXYZijAvailable callback.
   if (TangoService_connectOnXYZijAvailable(onXYZijAvailable) != TANGO_SUCCESS) {
@@ -372,6 +382,9 @@ TangoErrorType TangoData::Connect() {
   return TangoService_connect(nullptr, config_);
 }
 
+//I'm such a bad person
+extern DanceSteps* dance_steps;
+
 // Update XYZij data. This function will be called only when the XYZ_ij
 // data is changed (dirty). This function is being called through the
 // GL rendering thread (See tango_pointcloud.cpp, RenderFrame()).
@@ -412,17 +425,17 @@ void TangoData::UpdateXYZijData() {
 		  TangoData::GetInstance().c_to_imu_mat * GlUtil::oc_to_c_mat;
   //glm::mat4 mvp_mat = projection_mat * view_mat * model_mat * inverse_z_mat;
 
-  floor_height = 0.0f;
-  for (uint32_t i = 0; i < depth_buffer_size; i+=3) {
-	  glm::vec4 orig_pt(depth_buffer[3*i],depth_buffer[3*i+1],depth_buffer[3*i+2],1.0);
-	  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
-	 floor_height += xformed.y;
-	  		  /*points_in_world[(piw_front + 3*i)%piw_size] = xformed.x;
-	  		  points_in_world[(piw_front +3*i+1)%piw_size] = xformed.y;
-	  		  points_in_world[(piw_front +3*i+2)%piw_size] = xformed.z;*/
-  }
-  floor_height /= (depth_buffer_size/3);
 
+  for (uint32_t i = 0; i < depth_buffer_size; i+=3) {
+	  glm::vec4 orig_pt(depth_buffer[i],depth_buffer[i+1],depth_buffer[i+2],1.0);
+	  glm::vec4 xformed = model_mat * inverse_z_mat * orig_pt;
+	  		  points_in_world[i] = xformed.x;
+	  		  points_in_world[i+1] = xformed.y;
+	  		  points_in_world[i+2] = xformed.z;
+  }
+  if(dance_steps != 0){
+	  dance_steps->addDepthMapData(points_in_world,depth_buffer_size/3);
+  }
 
   // Reset xyz_ij dirty flag.
   is_xyzij_dirty = false;

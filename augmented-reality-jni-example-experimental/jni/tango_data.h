@@ -75,9 +75,9 @@ class TangoData {
   glm::mat4 d_to_imu_mat;
   glm::mat4 c_to_imu_mat;
 
-  float floor_height;
 
   float* depth_buffer;
+  float* points_in_world;
     uint32_t depth_buffer_size;
     bool is_xyzij_dirty;
 
