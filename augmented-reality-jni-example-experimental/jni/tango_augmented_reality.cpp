@@ -246,6 +246,7 @@ bool RenderFrame() {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+  ////SECTION: Data updates
   if (TangoData::GetInstance().is_xyzij_dirty) {
       TangoData::GetInstance().UpdateXYZijData();
   }
@@ -253,6 +254,10 @@ bool RenderFrame() {
   TangoData::GetInstance().UpdateColorTexture();
   TangoData::GetInstance().GetPoseAtTime();
 
+  if(dance_steps != nullptr){
+	  dance_steps->UpdatePixies();
+  }
+  ////SECTION: Rendering
   glm::vec3 position = TangoData::GetInstance().tango_position;
   glm::quat rotation = TangoData::GetInstance().tango_rotation;
 

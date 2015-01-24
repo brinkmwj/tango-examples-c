@@ -63,10 +63,18 @@ bool DanceSteps::createRandomPixie(){
 	return false;
 }
 
-void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat)  {
+void DanceSteps::UpdatePixies(){
 	if(pixie_queue.size() < 2){
 		createRandomPixie();
 	}
+
+	double now = now_ms();
+	while(pixie_queue.size() > 0 && (now - pixie_queue[0].start_time) > 5000){
+		pixie_queue.pop_front();
+	}
+}
+
+void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const  {
 	for(int i=0; i<pixie_queue.size(); i++){
 		//First, check the floor height of the pixie's position, make sure it is visible
 		int xindex = (pixie_queue[i].position.x - minX)/squareWidth;
@@ -77,10 +85,6 @@ void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_m
 			c->SetPosition(pixie_queue[i].position);
 			c->Render(projection_mat, view_mat);
 		}
-	}
-	double now = now_ms();
-	while(pixie_queue.size() > 0 && (now - pixie_queue[0].start_time) > 5000){
-		pixie_queue.pop_front();
 	}
 }
 
