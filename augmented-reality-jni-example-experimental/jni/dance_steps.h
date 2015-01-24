@@ -9,7 +9,7 @@ public:
 	~DanceSteps();
 
 	void addDepthMapData(float* points, uint32_t);
-private:
+
 	Cube* c;
 	class Pixie {
 	public:

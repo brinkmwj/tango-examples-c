@@ -90,7 +90,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 
         arView = (GLSurfaceView) findViewById(R.id.surfaceview);
 
-        AugmentedRealityView arViewRenderer = new AugmentedRealityView();
+        AugmentedRealityView arViewRenderer = new AugmentedRealityView(getApplicationContext());
         arViewRenderer.activity = AugmentedRealityActivity.this;
         arViewRenderer.isAutoRecovery = true;
         arView.setRenderer(arViewRenderer);

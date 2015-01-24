@@ -526,6 +526,50 @@ Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getIsLocalized(
   return is_localized;
 }
 
+JNIEXPORT jboolean JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieCreated(
+    JNIEnv*, jobject) {
+	bool ret = false;
+  if(dance_steps != nullptr){
+	  ret = dance_steps->pixie_created_this_turn;
+	  dance_steps->pixie_created_this_turn = false;
+  }
+  return ret;
+}
+
+JNIEXPORT jboolean JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieBit(
+    JNIEnv*, jobject) {
+	bool ret = false;
+  if(dance_steps != nullptr){
+	  ret = dance_steps->pixie_bit_this_turn;
+	  dance_steps->pixie_bit_this_turn = false;
+  }
+  return ret;
+}
+
+JNIEXPORT jboolean JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieMissed(
+    JNIEnv*, jobject) {
+	bool ret = false;
+  if(dance_steps != nullptr){
+	  ret = dance_steps->pixie_missed_this_turn;
+	  dance_steps->pixie_missed_this_turn = false;
+  }
+  return ret;
+}
+
+JNIEXPORT jboolean JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getPixieAttacked(
+    JNIEnv*, jobject) {
+	bool ret = false;
+  if(dance_steps != nullptr){
+	  ret = dance_steps->pixie_attacked_this_turn;
+	  dance_steps->pixie_attacked_this_turn = false;
+  }
+  return ret;
+}
+
 JNIEXPORT void JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_resetMotionTracking(
     JNIEnv*, jobject) {

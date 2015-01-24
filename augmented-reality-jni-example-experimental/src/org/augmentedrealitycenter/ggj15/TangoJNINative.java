@@ -52,6 +52,11 @@ public class TangoJNINative {
     public static native String getVersionNumber();
     
     public static native boolean getIsLocalized();
+    
+    public static native boolean getPixieCreated();
+    public static native boolean getPixieBit();
+    public static native boolean getPixieMissed();
+    public static native boolean getPixieAttacked();
 
     public static native void updateARElement(int arElement, int interactionType);
 
