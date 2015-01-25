@@ -1,4 +1,5 @@
 #include "particle_emitter.h"
+#include "tango_data.h"
 
 static const char kVertexShader[] =
     "attribute vec4 vertex;\n"
@@ -50,13 +51,22 @@ ParticleEmitter::ParticleEmitter() {
   }
   for(int i=0;i<num_parts;i++){
 	  part_colors[4*i] = 1.0f;
-	  part_colors[4*i+1] = 0.5f;
-	  part_colors[4*i+2] = 0.75f;
+	  part_colors[4*i+1] = 0.0f;
+	  part_colors[4*i+2] = 0.25f;
 	  part_colors[4*i+3] = starting_alpha*(1.0f-part_ratios[i]);
   }
 }
 
 void ParticleEmitter::UpdateParticles(){
+	glm::vec3 tango_loc = TangoData::GetInstance().tango_position_depth;
+	glm::vec3 diff = tango_loc - emitter_location;
+	float dist = glm::length(diff);
+	float whiten_amt = 0.0f;
+	if(dist > 0.5f){
+		whiten_amt = 1.0f*(0.5f/dist);
+	} else {
+		whiten_amt = 1.0f;
+	}
 	for(int i=0;i<num_parts;i++){
 		part_ratios[i] = part_ratios[i] + 1.0f/16.0f;
 		if(part_ratios[i] >= 1.0f){
@@ -66,6 +76,9 @@ void ParticleEmitter::UpdateParticles(){
 		part_coords[3*i+1] = part_start_coords[3*i+1]*(1.0f-part_ratios[i]) + part_end_coords[3*i+1]*part_ratios[i];
 		part_coords[3*i+2] = part_start_coords[3*i+2]*(1.0f-part_ratios[i]) + part_end_coords[3*i+2]*part_ratios[i];
 
+		part_colors[4*i] = 1.0f;
+		part_colors[4*i+1] = 0.0f+whiten_amt;
+		part_colors[4*i+2] = 0.5f+0.5f*whiten_amt;
 		part_colors[4*i+3] = starting_alpha*(1.0f-part_ratios[i]);
 	}
 }
