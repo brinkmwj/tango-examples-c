@@ -132,7 +132,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         	//introVideoView.setMediaController(mediaControls);
 
         	//set the uri of the video to be played
-        	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animatic4));
+        	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.intro2));
         	mediaPlayer.setDataSource(getApplicationContext(), Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.music_loop));
         	mediaPlayer.prepare();
         	mediaPlayer.setLooping(true);
