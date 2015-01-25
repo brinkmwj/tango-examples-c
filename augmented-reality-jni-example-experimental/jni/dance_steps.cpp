@@ -211,9 +211,11 @@ void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
 		}
 	}
 	//Then, fill in empty bits using old_floor_height
-	/*for(int i=0;i<fh_size;i++){
+	for(int i=0;i<fh_size;i++){
 		if(floor_heights[i].second < 5.0f && old_floor_heights[i].second >= 5.0f){
-			floor_heights[i] = old_floor_heights[i];
+			float fh = old_floor_heights[i].first/old_floor_heights[i].second;
+			floor_heights[i].second = old_floor_heights[i].second - 1.0f;
+			floor_heights[i].first = floor_heights[i].second*fh;
 		}
-	}*/
+	}
 }
