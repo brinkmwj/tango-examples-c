@@ -39,9 +39,8 @@ ParticleEmitter::ParticleEmitter() {
 
   part_ratios = new float[num_parts];
   for(int i=0; i<3*num_parts; i++){
-	  part_start_coords[i] = 0.0f;
-
 	  part_end_coords[i] = (rand()%256 - 128)/(128.0f*24);
+	  part_start_coords[i] = part_end_coords[i]/2.0f;
   }
   for(int i=0;i<num_parts;i++){
 	  part_ratios[i] = (rand()%256)/256.0f;
@@ -58,15 +57,6 @@ ParticleEmitter::ParticleEmitter() {
 }
 
 void ParticleEmitter::UpdateParticles(){
-	glm::vec3 tango_loc = TangoData::GetInstance().tango_position_depth;
-	glm::vec3 diff = tango_loc - emitter_location;
-	float dist = glm::length(diff);
-	float whiten_amt = 0.0f;
-	if(dist > 0.5f){
-		whiten_amt = 1.0f*(0.5f/dist);
-	} else {
-		whiten_amt = 1.0f;
-	}
 	for(int i=0;i<num_parts;i++){
 		part_ratios[i] = part_ratios[i] + 1.0f/16.0f;
 		if(part_ratios[i] >= 1.0f){
@@ -76,14 +66,28 @@ void ParticleEmitter::UpdateParticles(){
 		part_coords[3*i+1] = part_start_coords[3*i+1]*(1.0f-part_ratios[i]) + part_end_coords[3*i+1]*part_ratios[i];
 		part_coords[3*i+2] = part_start_coords[3*i+2]*(1.0f-part_ratios[i]) + part_end_coords[3*i+2]*part_ratios[i];
 
-		part_colors[4*i] = 1.0f;
-		part_colors[4*i+1] = 0.0f+whiten_amt;
-		part_colors[4*i+2] = 0.5f+0.5f*whiten_amt;
+
 		part_colors[4*i+3] = starting_alpha*(1.0f-part_ratios[i]);
 	}
 }
 
 void ParticleEmitter::Render(glm::mat4 projection_mat, glm::mat4 view_mat){
+	glm::vec3 tango_loc = TangoData::GetInstance().tango_position_depth;
+	glm::vec3 diff = tango_loc - emitter_location;
+	float dist = glm::length(diff);
+	float whiten_amt = 0.0f;
+	if(dist > 0.5f){
+		whiten_amt = 1.0f*(0.5f/dist);
+	} else {
+		whiten_amt = 1.0f;
+	}
+
+	for(int i=0;i<num_parts;i++){
+		part_colors[4*i] = 1.0f;
+		part_colors[4*i+1] = 0.0f+whiten_amt;
+		part_colors[4*i+2] = 0.5f+0.5f*whiten_amt;
+	}
+
 	glUseProgram(shader_program_);
 
 	glm::mat4 model_mat =
