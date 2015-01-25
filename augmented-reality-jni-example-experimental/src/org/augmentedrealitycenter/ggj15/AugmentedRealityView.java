@@ -45,16 +45,27 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     public int num_squashed;
     public int health;
     public int num_dodged;
+    public int num_summoned;
     
     public AugmentedRealityView(Context applicationContext) {
 		// TODO Auto-generated constructor stub
     	pContext = applicationContext;
     	r = new Random();
     	
-    	num_squashed = 0;
     	health = 10;
+    	num_squashed = 0;
     	num_dodged = 0;
+    	num_summoned = 0;
 	}
+    
+    public void startGame(){
+    	health = 10;
+    	num_squashed = 0;
+    	num_dodged = 0;
+    	num_summoned = 0;
+    	
+    	TangoJNINative.startGame();
+    }
 
 	public void setupSoundPoolPlayer()
     {
@@ -97,6 +108,7 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         
         if(numCreated > 0){
         	playShortResource(R.raw.summon2);
+        	num_summoned += numCreated;
         }
         if(numAttacked > 0){
         	playShortResource(R.raw.zzzzz);
@@ -130,5 +142,6 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         TangoJNINative.setupGraphic();
         TangoJNINative.initialize(activity);
         TangoJNINative.setupConfig(isAutoRecovery);
+        TangoJNINative.startGame();
     }
 }

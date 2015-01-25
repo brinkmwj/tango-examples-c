@@ -9,7 +9,9 @@ public:
 	void UpdatePixies();
 	~DanceSteps();
 	void doPixieSpawner();
-
+	void StartGame();
+	void StopGame();
+	void ResetGame();
 	void addDepthMapData(float* points, uint32_t);
 
 	ParticleEmitter* pe;
@@ -55,6 +57,7 @@ public:
 	int pixies_spawned;
 
 	double last_pixie_spawn;
+	bool game_active;
 
 	std::pair<float,float>* floor_heights;
 	std::pair<float,float>* old_floor_heights;

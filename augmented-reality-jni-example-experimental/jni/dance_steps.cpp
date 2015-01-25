@@ -32,6 +32,36 @@ static double now_ms(void) {
 
 }
 
+void DanceSteps::ResetGame(){
+	pixie_bit_this_turn = 0;
+	pixie_missed_this_turn = 0;
+	pixie_created_this_turn = 0;
+	pixie_attacked_this_turn = 0;
+	pixie_squashed_this_turn = 0;
+
+	pixie_wait_time = 10000.0f;
+	pixie_attack_time = 2000.0f;
+	pixie_hit_distance = 0.5f;
+	pixie_squash_distance = 0.5f;
+
+	pixie_spawn_time = 5000.0f;
+	pixie_spawn_start = -1.0f;
+
+	pixies_spawned = 0;
+	LOGI("About to clear pixies");
+	pixie_queue.clear();
+}
+
+void DanceSteps::StopGame(){
+	game_active = false;
+	pixie_queue.clear();
+}
+
+void DanceSteps::StartGame(){
+	ResetGame();
+	game_active = true;
+}
+
 DanceSteps::DanceSteps(){
 	pe = new ParticleEmitter();
 
@@ -42,21 +72,7 @@ DanceSteps::DanceSteps(){
 		old_floor_heights[i] = std::make_pair(0.0f,0.0f);
 	}
 
-	pixie_bit_this_turn = 0;
-	pixie_missed_this_turn = 0;
-	pixie_created_this_turn = 0;
-	pixie_attacked_this_turn = 0;
-	pixie_squashed_this_turn = 0;
-
-	 pixie_wait_time = 10000.0f;
-	 pixie_attack_time = 2000.0f;
-	 pixie_hit_distance = 0.5f;
-	 pixie_squash_distance = 0.5f;
-
-	 pixie_spawn_time = 5000.0f;
-	 pixie_spawn_start = -1.0f;
-
-	 pixies_spawned = 0;
+	ResetGame();
 }
 
 DanceSteps::~DanceSteps(){
@@ -66,6 +82,8 @@ DanceSteps::~DanceSteps(){
 }
 
 bool DanceSteps::createRandomPixie(){
+	if(!game_active) return false;
+
 	double start_time = now_ms();
 	for(int i=0; i<10; i++) {	//Make 10 tries, then give up
 		int xoffset = rand()%fh_dim;
@@ -92,6 +110,8 @@ bool DanceSteps::createRandomPixie(){
 
 
 void DanceSteps::squashPixie(){
+	if(!game_active) return;
+
 	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
 	for(int i=0;i<pixie_queue.size();i++){
 		if(!pixie_queue[i].is_dead &&
@@ -104,6 +124,8 @@ void DanceSteps::squashPixie(){
 }
 
 void DanceSteps::UpdatePixies(){
+	if(!game_active) return;
+
 	double now = now_ms();
 	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
 
@@ -141,6 +163,8 @@ void DanceSteps::UpdatePixies(){
 }
 
 void DanceSteps::doPixieSpawner(){
+	if(!game_active) return;
+
 	if(pixie_spawn_start < 0.0f){
 		pixie_spawn_start = now_ms();
 		last_pixie_spawn = pixie_spawn_start;
@@ -152,6 +176,8 @@ void DanceSteps::doPixieSpawner(){
 }
 
 void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const  {
+	if(!game_active) return;
+
 	pe->UpdateParticles();
 	for(int i=0; i<pixie_queue.size(); i++){
 		//First, check the floor height of the pixie's position, make sure it is visible

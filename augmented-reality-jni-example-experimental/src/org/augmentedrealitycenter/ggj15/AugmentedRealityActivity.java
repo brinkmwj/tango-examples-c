@@ -33,6 +33,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     private VideoView introVideoView;
     private MediaController mediaControls;
     private MediaPlayer mediaPlayer;
+    private ImageView imageView;
     private AugmentedRealityView arViewRenderer;
     
     private float[] touchStartPos = new float[2];
@@ -115,7 +117,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         if (mediaControls == null) {
         	mediaControls = new MediaController(this);
         }
-
+        imageView = (ImageView)findViewById(R.id.imageView1);
         mediaPlayer = new MediaPlayer();
 		
         try {
@@ -152,6 +154,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 					introVideoView.setVisibility(View.INVISIBLE);
 					arView.setVisibility(View.VISIBLE);
 					score.setVisibility(View.VISIBLE);
+					
 					arView.requestFocus();
 					mediaPlayer.start();
 					return true;
@@ -161,6 +164,24 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 			}
         	
         });
+        
+        imageView.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				if(imageView.getVisibility() == View.VISIBLE){
+					arView.setVisibility(View.VISIBLE);
+					imageView.setVisibility(View.INVISIBLE);
+					
+					arViewRenderer.startGame();
+					
+					return true;
+				}
+				return false;
+			}
+        	
+        });
+        
         introVideoView.setOnCompletionListener(new OnCompletionListener(){
 
 			@Override
@@ -170,6 +191,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 				arView.setVisibility(View.VISIBLE);
 				score.setVisibility(View.VISIBLE);
 				arView.requestFocus();
+
 				mediaPlayer.start();
 			}
         	
@@ -209,9 +231,20 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                                     "\nApp Version:" + appVersionString +
                                     "\n" + TangoJNINative.getPoseString());
                                 
-                                score.setText("Health: " + arViewRenderer.health + 
-                                		" Dodged: " + arViewRenderer.num_dodged + 
-                                		" Squashed: " +  arViewRenderer.num_squashed);
+                                if(arViewRenderer.health == 0){
+                                	imageView.setVisibility(View.VISIBLE);
+                                	arView.setVisibility(View.VISIBLE);
+                                	TangoJNINative.stopGame();
+                                	score.setText("GAME OVER\n" +
+                                    		" Dodged: " + arViewRenderer.num_dodged + 
+                                    		" Squashed: " +  arViewRenderer.num_squashed);
+                                } else {
+                                	score.setText("Health: " + arViewRenderer.health + 
+                                    		" Dodged: " + arViewRenderer.num_dodged + 
+                                    		" Squashed: " +  arViewRenderer.num_squashed + 
+                                    		" Attacking: " + (arViewRenderer.num_summoned - arViewRenderer.num_dodged 
+                                    				- arViewRenderer.num_squashed - (10-arViewRenderer.health)));
+                                }
                             }
                         });
 

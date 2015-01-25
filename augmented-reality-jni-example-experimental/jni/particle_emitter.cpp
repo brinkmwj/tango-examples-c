@@ -78,6 +78,7 @@ void ParticleEmitter::Render(glm::mat4 projection_mat, glm::mat4 view_mat){
 	float whiten_amt = 0.0f;
 	if(dist > 0.5f){
 		whiten_amt = 1.0f*(0.5f/dist);
+		whiten_amt = whiten_amt*whiten_amt; //Gives a more abrupt transition
 	} else {
 		whiten_amt = 1.0f;
 	}

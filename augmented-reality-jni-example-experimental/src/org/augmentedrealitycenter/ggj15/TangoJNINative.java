@@ -61,6 +61,9 @@ public class TangoJNINative {
     
     public static native void squashPixie();
     
+    public static native void startGame();
+    public static native void stopGame();
+    
     public static native void updateARElement(int arElement, int interactionType);
 
     public static native float startSetCameraOffset();

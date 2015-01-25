@@ -517,6 +517,20 @@ Java_org_augmentedrealitycenter_ggj15_TangoJNINative_render(
   RenderFrame();
 }
 
+JNIEXPORT void JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_startGame(
+    JNIEnv*, jobject) {
+	LOGI("Starting game");
+  dance_steps->StartGame();
+  LOGI("Done Starting game");
+}
+
+JNIEXPORT void JNICALL
+Java_org_augmentedrealitycenter_ggj15_TangoJNINative_stopGame(
+    JNIEnv*, jobject) {
+	dance_steps->StopGame();
+}
+
 JNIEXPORT jboolean JNICALL
 Java_org_augmentedrealitycenter_ggj15_TangoJNINative_getIsLocalized(
     JNIEnv*, jobject) {
