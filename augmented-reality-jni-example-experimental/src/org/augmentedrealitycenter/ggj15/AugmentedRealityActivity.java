@@ -242,9 +242,9 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                                 	arView.setVisibility(View.VISIBLE); //TODO: Should be invisible, but leads to bugs?
                                 	vinesView.setVisibility(View.INVISIBLE);
                                 	TangoJNINative.stopGame();
-                                	score.setText("GAME OVER\n" +
-                                    		" Dodged: " + arViewRenderer.num_dodged + 
-                                    		" Squashed: " +  arViewRenderer.num_squashed);
+                                	score.setText("FINAL SCORE: " +
+                                    		arViewRenderer.num_dodged + " Dodged, "
+                                    		+  arViewRenderer.num_squashed + " Squashed" );
                                 } else {
                                 	score.setText("Health: " + arViewRenderer.health + 
                                     		" Dodged: " + arViewRenderer.num_dodged + 

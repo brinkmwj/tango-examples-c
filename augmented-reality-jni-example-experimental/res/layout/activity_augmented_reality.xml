@@ -7,6 +7,7 @@
         android:id="@+id/surfaceview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
         android:layout_gravity="top"
         android:visibility="invisible" />
 
@@ -59,11 +60,12 @@
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
         android:layout_centerVertical="false"
         android:paddingLeft="5dp"
-        android:paddingTop="55dp"
+        android:paddingTop="25dp"
         android:textStyle="bold"
         android:typeface="sans"
         android:visibility="invisible" />

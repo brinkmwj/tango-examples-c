@@ -52,14 +52,14 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     	pContext = applicationContext;
     	r = new Random();
     	
-    	health = 1;
+    	health = 10;
     	num_squashed = 0;
     	num_dodged = 0;
     	num_summoned = 0;
 	}
     
     public void startGame(){
-    	health = 1;
+    	health = 10;
     	num_squashed = 0;
     	num_dodged = 0;
     	num_summoned = 0;
