@@ -41,6 +41,7 @@ public:
 	int pixie_squashed_this_turn;
 
 	std::pair<float,float>* floor_heights;
+	std::pair<float,float>* old_floor_heights;
 	std::deque<Pixie> pixie_queue;
 };
 

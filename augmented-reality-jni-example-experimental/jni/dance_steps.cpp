@@ -35,8 +35,10 @@ DanceSteps::DanceSteps(){
 	c = new Cube();
 	c->SetScale(kCubeScale);
 	floor_heights = new std::pair<float,float>[fh_size];
+	old_floor_heights = new std::pair<float,float>[fh_size];
 	for(int i=0;i<fh_size;i++){
 		floor_heights[i] = std::make_pair(0.0f,0.0f);
+		old_floor_heights[i] = std::make_pair(0.0f,0.0f);
 	}
 
 	pixie_bit_this_turn = 0;
@@ -143,11 +145,14 @@ void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_m
 }
 
 void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
+	std::swap(floor_heights,old_floor_heights);
+
+	//First, clear out the buffer to fill
 	for(int j=0;j<fh_size;j++){
 		floor_heights[j].first = 0.0f;
 		floor_heights[j].second = 0.0f;
 	}
-
+	//Next, fill it
 	for(int i=0;i<num_points; i++){
 		int xindex = (points[3*i+0] - minX)/squareWidth;
 		int yindex = (points[3*i+2] - minY)/squareWidth;
@@ -156,6 +161,12 @@ void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
 		if(offset >= 0 && offset < fh_size) {
 			floor_heights[offset].first += points[3*i+1];
 			floor_heights[offset].second += 1.0f;
+		}
+	}
+	//Then, fill in empty bits using old_floor_height
+	for(int i=0;i<fh_size;i++){
+		if(floor_heights[i].second < 5.0f && old_floor_heights[i].second >= 5.0f){
+			floor_heights[i] = old_floor_heights[i];
 		}
 	}
 }
