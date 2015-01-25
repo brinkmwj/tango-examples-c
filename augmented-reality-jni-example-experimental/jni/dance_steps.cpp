@@ -67,6 +67,7 @@ DanceSteps::DanceSteps(){
 
 	floor_heights = new std::pair<float,float>[fh_size];
 	old_floor_heights = new std::pair<float,float>[fh_size];
+	floor_heights_minmax = new std::pair<float,float>[fh_size];
 	for(int i=0;i<fh_size;i++){
 		floor_heights[i] = std::make_pair(0.0f,0.0f);
 		old_floor_heights[i] = std::make_pair(0.0f,0.0f);
@@ -79,6 +80,7 @@ DanceSteps::~DanceSteps(){
 	delete pe;
 	delete[] floor_heights;
 	delete[] old_floor_heights;
+	delete[] floor_heights_minmax;
 }
 
 bool DanceSteps::createRandomPixie(){
@@ -198,7 +200,11 @@ void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
 	for(int j=0;j<fh_size;j++){
 		floor_heights[j].first = 0.0f;
 		floor_heights[j].second = 0.0f;
+
+		floor_heights_minmax[j].first = 100.0f;
+		floor_heights_minmax[j].second = -100.0f;
 	}
+
 	//Next, fill it
 	for(int i=0;i<num_points; i++){
 		int xindex = (points[3*i+0] - minX)/squareWidth;
@@ -208,14 +214,27 @@ void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
 		if(offset >= 0 && offset < fh_size) {
 			floor_heights[offset].first += points[3*i+1];
 			floor_heights[offset].second += 1.0f;
+
+			if(points[3*i+1] > floor_heights_minmax[offset].second){
+				floor_heights_minmax[offset].second = points[3*i+1];
+			}
+			if(points[3*i+1] < floor_heights_minmax[offset].first){
+				floor_heights_minmax[offset].first = points[3*i+1];
+			}
 		}
 	}
 	//Then, fill in empty bits using old_floor_height
 	for(int i=0;i<fh_size;i++){
+		if((floor_heights_minmax[i].second - floor_heights_minmax[i].first) > squareWidth/3.0f){
+			//This indicates not a flat space, so blow it away
+			floor_heights[i].second = 0.0f;
+		}
 		if(floor_heights[i].second < 5.0f && old_floor_heights[i].second >= 5.0f){
 			float fh = old_floor_heights[i].first/old_floor_heights[i].second;
 			floor_heights[i].second = old_floor_heights[i].second - 1.0f;
 			floor_heights[i].first = floor_heights[i].second*fh;
+		} else if(floor_heights[i].second < 5.0f) {
+			floor_heights[i].second = 0.0f;
 		}
 	}
 }

@@ -60,6 +60,7 @@ public:
 	bool game_active;
 
 	std::pair<float,float>* floor_heights;
+	std::pair<float,float>* floor_heights_minmax;
 	std::pair<float,float>* old_floor_heights;
 	std::deque<Pixie> pixie_queue;
 };
