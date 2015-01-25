@@ -37,3 +37,4 @@ Music: Original, Tanner Howell
 Warp: https://www.freesound.org/people/harpoyume/sounds/86074/
 Buzz: https://www.freesound.org/people/dobroide/sounds/95817/
 Squish: https://www.freesound.org/people/PaulMorek/sounds/196725/
+All others: Original, Bo Brinkman (CC0 license)
