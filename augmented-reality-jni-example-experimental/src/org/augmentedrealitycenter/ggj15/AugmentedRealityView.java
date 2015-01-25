@@ -23,6 +23,8 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.opengl.GLSurfaceView;
+import android.widget.TextView;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -40,10 +42,18 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     
     private Random r;
     
+    public int num_squashed;
+    public int health;
+    public int num_dodged;
+    
     public AugmentedRealityView(Context applicationContext) {
 		// TODO Auto-generated constructor stub
     	pContext = applicationContext;
     	r = new Random();
+    	
+    	num_squashed = 0;
+    	health = 10;
+    	num_dodged = 0;
 	}
 
 	public void setupSoundPoolPlayer()
@@ -82,14 +92,21 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
     
     public void onDrawFrame(GL10 gl) {
         TangoJNINative.render();
-        if(TangoJNINative.getPixieCreated() > 0){
+        
+        int numCreated = TangoJNINative.getPixieCreated();
+        int numAttacked = TangoJNINative.getPixieAttacked();
+        int numMissed = TangoJNINative.getPixieMissed();
+        int numBit = TangoJNINative.getPixieBit();
+        int numSquashed = TangoJNINative.getPixieSquashed();
+        
+        if(numCreated > 0){
         	playShortResource(R.raw.oot_navi_hey5);
         	//playShortResource(R.raw.summon);
         }
-        if(TangoJNINative.getPixieAttacked() > 0){
+        if(numAttacked > 0){
         	playShortResource(R.raw.oot_navi_watchout5);
         }
-        if(TangoJNINative.getPixieMissed() > 0){
+        if(numMissed > 0){
         	playShortResource(R.raw.oot_navi_in);
         	
         	if(r.nextFloat() < 0.05){
@@ -97,14 +114,20 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         	} else {
         		playShortResource(R.raw.whew);
         	}
+        	
+        	num_dodged += numMissed;
         }
-        if(TangoJNINative.getPixieBit() > 0){
+        if(numBit > 0){
         	playShortResource(R.raw.oot_navi_bonk);
         	playShortResource(R.raw.auuch);
+        	
+        	health -= numBit;
         }
-        if(TangoJNINative.getPixieSquashed() > 0){
+        if(numSquashed > 0){
         	playShortResource(R.raw.gotcha);
         	playShortResource(R.raw.squish);
+        	
+        	num_squashed += numSquashed;
         }
     }
 

@@ -49,9 +49,11 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 
     private GLSurfaceView arView;
     private TextView tangoPoseStatusText;
+    private TextView score;
     private VideoView introVideoView;
     private MediaController mediaControls;
     private MediaPlayer mediaPlayer;
+    private AugmentedRealityView arViewRenderer;
     
     private float[] touchStartPos = new float[2];
     private float[] touchCurPos = new float[2];
@@ -90,8 +92,10 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         setContentView(R.layout.activity_augmented_reality);
 
         arView = (GLSurfaceView) findViewById(R.id.surfaceview);
-
-        AugmentedRealityView arViewRenderer = new AugmentedRealityView(getApplicationContext());
+        score = (TextView)findViewById(R.id.score);
+        score.setTextSize(32.0f);
+        
+        arViewRenderer = new AugmentedRealityView(getApplicationContext());
         arViewRenderer.activity = AugmentedRealityActivity.this;
         arViewRenderer.isAutoRecovery = true;
         arView.setRenderer(arViewRenderer);
@@ -147,6 +151,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 					introVideoView.stopPlayback();
 					introVideoView.setVisibility(View.INVISIBLE);
 					arView.setVisibility(View.VISIBLE);
+					score.setVisibility(View.VISIBLE);
 					arView.requestFocus();
 					mediaPlayer.start();
 					return true;
@@ -163,6 +168,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 				// TODO Auto-generated method stub
 				introVideoView.setVisibility(View.INVISIBLE);
 				arView.setVisibility(View.VISIBLE);
+				score.setVisibility(View.VISIBLE);
 				arView.requestFocus();
 				mediaPlayer.start();
 			}
@@ -202,6 +208,10 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                                     "Service Version:" + TangoJNINative.getVersionNumber() +
                                     "\nApp Version:" + appVersionString +
                                     "\n" + TangoJNINative.getPoseString());
+                                
+                                score.setText("Health: " + arViewRenderer.health + 
+                                		" Dodged: " + arViewRenderer.num_dodged + 
+                                		" Squashed: " +  arViewRenderer.num_squashed);
                             }
                         });
 
