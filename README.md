@@ -31,4 +31,9 @@ Credits
 
 This code started as a fork of [Google's Tango Examples](https://github.com/googlesamples/tango-examples-c) and is used under the Apache License 2.0, and I have chosen to release my code under that license as well.
 
-
+Sound effects credits
+---------------------
+Music: Original, Tanner Howell
+Warp: https://www.freesound.org/people/harpoyume/sounds/86074/
+Buzz: https://www.freesound.org/people/dobroide/sounds/95817/
+Squish: https://www.freesound.org/people/PaulMorek/sounds/196725/

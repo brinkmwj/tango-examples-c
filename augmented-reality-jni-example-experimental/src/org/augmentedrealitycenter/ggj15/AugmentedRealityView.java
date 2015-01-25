@@ -72,21 +72,18 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         // setup Soundpool
         this.mShortPlayer = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
         
-        mSounds.put(R.raw.summon2, this.mShortPlayer.load(pContext, R.raw.summon2, 1));
+       
         mSounds.put(R.raw.whew, this.mShortPlayer.load(pContext, R.raw.whew, 1));
-        mSounds.put(R.raw.zzzzz, this.mShortPlayer.load(pContext, R.raw.zzzzz, 1));
+        mSounds.put(R.raw.beebuzz, this.mShortPlayer.load(pContext, R.raw.beebuzz, 1));
         mSounds.put(R.raw.auuch, this.mShortPlayer.load(pContext, R.raw.auuch, 1));
         mSounds.put(R.raw.gotcha, this.mShortPlayer.load(pContext, R.raw.gotcha, 1));
         mSounds.put(R.raw.squish, this.mShortPlayer.load(pContext, R.raw.squish, 1));
-        mSounds.put(R.raw.summon, this.mShortPlayer.load(pContext, R.raw.summon, 1));
+        mSounds.put(R.raw.warp, this.mShortPlayer.load(pContext, R.raw.warp, 1));
     }
 
     public void playShortResource(int piResource) {
         int iSoundId = (Integer) mSounds.get(piResource);
         float volume = 0.99f;
-        if(piResource == R.raw.summon){
-        	volume = 0.5f;
-        }
         this.mShortPlayer.play(iSoundId, volume, volume, 0, 0, 1);
     }
 
@@ -107,11 +104,11 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         int numSquashed = TangoJNINative.getPixieSquashed();
         
         if(numCreated > 0){
-        	playShortResource(R.raw.summon2);
+        	playShortResource(R.raw.warp);
         	num_summoned += numCreated;
         }
         if(numAttacked > 0){
-        	playShortResource(R.raw.zzzzz);
+        	playShortResource(R.raw.beebuzz);
         }
         if(numMissed > 0){
         	playShortResource(R.raw.whew);
