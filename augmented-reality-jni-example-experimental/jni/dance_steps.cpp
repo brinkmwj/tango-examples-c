@@ -6,6 +6,7 @@
 #include "tango-gl-renderer/grid.h"
 #include "tango-gl-renderer/trace.h"
 
+#include "particle_emitter.h"
 #include "dance_steps.h"
 #include "tango_data.h"
 
@@ -32,8 +33,8 @@ static double now_ms(void) {
 }
 
 DanceSteps::DanceSteps(){
-	c = new Cube();
-	c->SetScale(kCubeScale);
+	pe = new ParticleEmitter();
+
 	floor_heights = new std::pair<float,float>[fh_size];
 	old_floor_heights = new std::pair<float,float>[fh_size];
 	for(int i=0;i<fh_size;i++){
@@ -54,11 +55,14 @@ DanceSteps::DanceSteps(){
 
 	 pixie_spawn_time = 5000.0f;
 	 pixie_spawn_start = -1.0f;
+
+	 pixies_spawned = 0;
 }
 
 DanceSteps::~DanceSteps(){
-	delete c;
+	delete pe;
 	delete[] floor_heights;
+	delete[] old_floor_heights;
 }
 
 bool DanceSteps::createRandomPixie(){
@@ -75,6 +79,9 @@ bool DanceSteps::createRandomPixie(){
 			pixie_created_this_turn += 1;
 
 			last_pixie_spawn = now_ms();
+
+			pixies_spawned += 1;
+			pixie_spawn_time = 5000.0f - pixies_spawned*50.0f;
 			return true;
 		}
 	}
@@ -145,14 +152,15 @@ void DanceSteps::doPixieSpawner(){
 }
 
 void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const  {
+	pe->UpdateParticles();
 	for(int i=0; i<pixie_queue.size(); i++){
 		//First, check the floor height of the pixie's position, make sure it is visible
 		int xindex = (pixie_queue[i].cur_position.x - minX)/squareWidth;
 		int yindex = (pixie_queue[i].cur_position.z - minY)/squareWidth;
 		int offset = xindex + yindex*fh_dim;
 		if(!pixie_queue[i].is_dead){
-			c->SetPosition(pixie_queue[i].cur_position);
-			c->Render(projection_mat, view_mat);
+			pe->emitter_location = pixie_queue[i].cur_position;
+			pe->Render(projection_mat, view_mat);
 		}
 	}
 }

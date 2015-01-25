@@ -29,6 +29,7 @@ LOCAL_SRC_FILES := jni/tango_augmented_reality.cpp \
                    jni/tango_data.cpp \
                    jni/pointcloud.cpp \
                    jni/dance_steps.cpp \
+                   jni/particle_emitter.cpp \
                    ../tango-gl-renderer/ar_ruler.cpp \
                    ../tango-gl-renderer/axis.cpp \
                    ../tango-gl-renderer/cube.cpp \

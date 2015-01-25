@@ -1,6 +1,7 @@
 #ifndef DANCE_STEPS_H
 #define DANCE_STEPS_H
 #include <deque>
+#include "particle_emitter.h"
 class DanceSteps {
 public:
 	DanceSteps();
@@ -11,7 +12,7 @@ public:
 
 	void addDepthMapData(float* points, uint32_t);
 
-	Cube* c;
+	ParticleEmitter* pe;
 	class Pixie {
 	public:
 		glm::vec3 start_position; //In world coordinates, where pixie starts
@@ -50,6 +51,8 @@ public:
 	int pixie_created_this_turn;
 	int pixie_attacked_this_turn;
 	int pixie_squashed_this_turn;
+
+	int pixies_spawned;
 
 	double last_pixie_spawn;
 
