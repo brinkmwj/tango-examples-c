@@ -9,7 +9,7 @@
 #include "dance_steps.h"
 #include "tango_data.h"
 
-const glm::vec3 kCubeScale = glm::vec3(0.1f, 0.001f, 0.1f);
+const glm::vec3 kCubeScale = glm::vec3(0.1f, 0.1f, 0.1f);
 
 const float squareWidth = 0.25;
 const float minX = -2.0;

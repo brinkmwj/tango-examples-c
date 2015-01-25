@@ -61,11 +61,16 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         mSounds.put(R.raw.missed_it, this.mShortPlayer.load(pContext, R.raw.missed_it, 1));
         mSounds.put(R.raw.gotcha, this.mShortPlayer.load(pContext, R.raw.gotcha, 1));
         mSounds.put(R.raw.squish, this.mShortPlayer.load(pContext, R.raw.squish, 1));
+        mSounds.put(R.raw.summon, this.mShortPlayer.load(pContext, R.raw.summon, 1));
     }
 
     public void playShortResource(int piResource) {
         int iSoundId = (Integer) mSounds.get(piResource);
-        this.mShortPlayer.play(iSoundId, 0.99f, 0.99f, 0, 0, 1);
+        float volume = 0.99f;
+        if(piResource == R.raw.summon){
+        	volume = 0.5f;
+        }
+        this.mShortPlayer.play(iSoundId, volume, volume, 0, 0, 1);
     }
 
     // Cleanup
@@ -79,6 +84,7 @@ public class AugmentedRealityView implements GLSurfaceView.Renderer {
         TangoJNINative.render();
         if(TangoJNINative.getPixieCreated() > 0){
         	playShortResource(R.raw.oot_navi_hey5);
+        	//playShortResource(R.raw.summon);
         }
         if(TangoJNINative.getPixieAttacked() > 0){
         	playShortResource(R.raw.oot_navi_watchout5);
