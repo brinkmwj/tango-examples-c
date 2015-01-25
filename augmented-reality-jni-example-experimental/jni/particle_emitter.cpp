@@ -71,7 +71,7 @@ void ParticleEmitter::UpdateParticles(){
 	}
 }
 
-void ParticleEmitter::Render(glm::mat4 projection_mat, glm::mat4 view_mat){
+void ParticleEmitter::Render(glm::mat4 projection_mat, glm::mat4 view_mat, bool pixie_is_attacking){
 	glm::vec3 tango_loc = TangoData::GetInstance().tango_position_depth;
 	glm::vec3 diff = tango_loc - emitter_location;
 	float dist = glm::length(diff);
@@ -84,9 +84,15 @@ void ParticleEmitter::Render(glm::mat4 projection_mat, glm::mat4 view_mat){
 	}
 
 	for(int i=0;i<num_parts;i++){
-		part_colors[4*i] = 1.0f;
-		part_colors[4*i+1] = 0.0f+whiten_amt;
-		part_colors[4*i+2] = 0.5f+0.5f*whiten_amt;
+		if(pixie_is_attacking){
+			part_colors[4*i] = 0.0f+whiten_amt;
+			part_colors[4*i+1] = 1.0f;
+			part_colors[4*i+2] = 0.0f+whiten_amt;
+		} else {
+			part_colors[4*i] = 1.0f;
+			part_colors[4*i+1] = 0.0f+whiten_amt;
+			part_colors[4*i+2] = 0.5f+0.5f*whiten_amt;
+		}
 	}
 
 	glUseProgram(shader_program_);

@@ -186,7 +186,7 @@ void DanceSteps::Render(const glm::mat4& projection_mat, const glm::mat4& view_m
 		int offset = xindex + yindex*fh_dim;
 		if(!pixie_queue[i].is_dead){
 			pe->emitter_location = pixie_queue[i].cur_position;
-			pe->Render(projection_mat, view_mat);
+			pe->Render(projection_mat, view_mat, pixie_queue[i].is_attacking);
 		}
 	}
 }

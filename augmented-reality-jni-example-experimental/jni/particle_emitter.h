@@ -24,7 +24,7 @@ public:
 
 	void UpdateParticles();
 
-	void Render(glm::mat4 projection_mat, glm::mat4 view_mat);
+	void Render(glm::mat4 projection_mat, glm::mat4 view_mat, bool pixie_is_attacking);
 	glm::vec3 emitter_location;
 };
 
