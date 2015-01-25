@@ -46,6 +46,14 @@ DanceSteps::DanceSteps(){
 	pixie_created_this_turn = 0;
 	pixie_attacked_this_turn = 0;
 	pixie_squashed_this_turn = 0;
+
+	 pixie_wait_time = 10000.0f;
+	 pixie_attack_time = 2000.0f;
+	 pixie_hit_distance = 0.5f;
+	 pixie_squash_distance = 0.5f;
+
+	 pixie_spawn_time = 5000.0f;
+	 pixie_spawn_start = -1.0f;
 }
 
 DanceSteps::~DanceSteps(){
@@ -65,6 +73,8 @@ bool DanceSteps::createRandomPixie(){
 					minY + yoffset*squareWidth)),start_time);
 			pixie_queue.push_back(p);
 			pixie_created_this_turn += 1;
+
+			last_pixie_spawn = now_ms();
 			return true;
 		}
 	}
@@ -72,10 +82,7 @@ bool DanceSteps::createRandomPixie(){
 	return false;
 }
 
-float pixie_wait_time = 10000.0f;
-float pixie_attack_time = 2000.0f;
-float pixie_hit_distance = 0.25f;
-float pixie_squash_distance = 0.5f;
+
 
 void DanceSteps::squashPixie(){
 	glm::vec3 player_position = TangoData::GetInstance().tango_position_depth;
@@ -123,11 +130,17 @@ void DanceSteps::UpdatePixies(){
 		pixie_queue.pop_front();
 	}
 
-	//Replenish pixies, if dead
-	if(pixie_queue.size() < 20){
-		if(rand()%100 == 0){
-			createRandomPixie();
-		}
+	doPixieSpawner();
+}
+
+void DanceSteps::doPixieSpawner(){
+	if(pixie_spawn_start < 0.0f){
+		pixie_spawn_start = now_ms();
+		last_pixie_spawn = pixie_spawn_start;
+	}
+
+	if(now_ms() - last_pixie_spawn > pixie_spawn_time){
+		createRandomPixie();
 	}
 }
 
@@ -164,9 +177,9 @@ void DanceSteps::addDepthMapData(float* points, uint32_t num_points){
 		}
 	}
 	//Then, fill in empty bits using old_floor_height
-	for(int i=0;i<fh_size;i++){
+	/*for(int i=0;i<fh_size;i++){
 		if(floor_heights[i].second < 5.0f && old_floor_heights[i].second >= 5.0f){
 			floor_heights[i] = old_floor_heights[i];
 		}
-	}
+	}*/
 }

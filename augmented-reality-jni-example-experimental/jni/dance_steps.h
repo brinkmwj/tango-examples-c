@@ -7,6 +7,7 @@ public:
 	void Render(const glm::mat4& projection_mat, const glm::mat4& view_mat) const;
 	void UpdatePixies();
 	~DanceSteps();
+	void doPixieSpawner();
 
 	void addDepthMapData(float* points, uint32_t);
 
@@ -22,6 +23,8 @@ public:
 		bool is_dead;
 		bool is_attacking;
 
+
+
 		Pixie(glm::vec3 ipos, double ist){
 			start_position = ipos;
 			start_time = ist;
@@ -34,11 +37,21 @@ public:
 	bool createRandomPixie();
 	void squashPixie();
 
+	float pixie_wait_time ;
+	float pixie_attack_time ;
+	float pixie_hit_distance ;
+	float pixie_squash_distance ;
+
+	float pixie_spawn_time ;
+	float pixie_spawn_start ;
+
 	int pixie_bit_this_turn;
 	int pixie_missed_this_turn;
 	int pixie_created_this_turn;
 	int pixie_attacked_this_turn;
 	int pixie_squashed_this_turn;
+
+	double last_pixie_spawn;
 
 	std::pair<float,float>* floor_heights;
 	std::pair<float,float>* old_floor_heights;
