@@ -44,3 +44,5 @@ All others: Original, Bo Brinkman (CC0 license)
 Art
 ----
 Vine border: http://www.webdesignhot.com/free-vector-graphics/vines-frame-vector/
+Manic pixie: Lines by Darrias Campbell, Color by Bo Brinkman
+Font: http://openfontlibrary.org/en/font/leopold (GUST License)

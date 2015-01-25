@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -57,6 +58,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     private ImageView imageView;
     private ImageView vinesView;
     private AugmentedRealityView arViewRenderer;
+    private Typeface romancium;
     
     private float[] touchStartPos = new float[2];
     private float[] touchCurPos = new float[2];
@@ -96,7 +98,9 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 
         arView = (GLSurfaceView) findViewById(R.id.surfaceview);
         score = (TextView)findViewById(R.id.score);
-        score.setTextSize(32.0f);
+        score.setTextSize(42.0f);
+        romancium = Typeface.createFromAsset(getAssets(),"fonts/leopold.otf");
+        score.setTypeface(romancium);
         
         arViewRenderer = new AugmentedRealityView(getApplicationContext());
         arViewRenderer.activity = AugmentedRealityActivity.this;
