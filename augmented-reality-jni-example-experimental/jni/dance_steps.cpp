@@ -117,7 +117,7 @@ void DanceSteps::UpdatePixies(){
 			}
 
 			float ratio = ((now - pixie_queue[i].start_time) - pixie_wait_time)/pixie_attack_time;
-			pixie_queue[i].cur_position = pixie_queue[i].start_position + pixie_queue[i].attack_direction*(ratio*8.0f);
+			pixie_queue[i].cur_position = pixie_queue[i].start_position + pixie_queue[i].attack_direction*(ratio*5.0f);
 			if(glm::length(player_position - pixie_queue[i].cur_position) < pixie_hit_distance){
 				pixie_queue[i].is_dead = true;
 				pixie_bit_this_turn += 1;
