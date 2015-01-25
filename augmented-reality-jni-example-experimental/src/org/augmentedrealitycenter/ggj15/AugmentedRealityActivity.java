@@ -51,7 +51,8 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     private TextView tangoPoseStatusText;
     private VideoView introVideoView;
     private MediaController mediaControls;
-
+    private MediaPlayer mediaPlayer;
+    
     private float[] touchStartPos = new float[2];
     private float[] touchCurPos = new float[2];
     private float touchStartDist = 0.0f;
@@ -111,13 +112,17 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         	mediaControls = new MediaController(this);
         }
 
+        mediaPlayer = new MediaPlayer();
+		
         try {
         	//set the media controller in the VideoView
         	//introVideoView.setMediaController(mediaControls);
 
         	//set the uri of the video to be played
         	introVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animatic4));
-
+        	mediaPlayer.setDataSource(getApplicationContext(), Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.music_loop));
+        	mediaPlayer.prepare();
+        	mediaPlayer.setLooping(true);
         } catch (Exception e) {
         	Log.e("Error", e.getMessage());
 
@@ -143,6 +148,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 					introVideoView.setVisibility(View.INVISIBLE);
 					arView.setVisibility(View.VISIBLE);
 					arView.requestFocus();
+					mediaPlayer.start();
 					return true;
 				} else {
 					return false;
@@ -155,8 +161,10 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 			@Override
 			public void onCompletion(MediaPlayer arg0) {
 				// TODO Auto-generated method stub
+				introVideoView.setVisibility(View.INVISIBLE);
 				arView.setVisibility(View.VISIBLE);
 				arView.requestFocus();
+				mediaPlayer.start();
 			}
         	
         });
@@ -226,6 +234,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         arView.onResume();
+        mediaPlayer.start();
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 );
@@ -235,6 +244,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     protected void onPause() {
         super.onPause();
         arView.onPause();
+        mediaPlayer.pause();
         TangoJNINative.disconnectService();
     }
 
