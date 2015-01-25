@@ -31,6 +31,8 @@ Credits
 
 This code started as a fork of [Google's Tango Examples](https://github.com/googlesamples/tango-examples-c) and is used under the Apache License 2.0, and I have chosen to release my code under that license as well.
 
+Included sounds and art are all under some form of CC license.
+
 Sound effects credits
 ---------------------
 Music: Original, Tanner Howell
@@ -38,3 +40,7 @@ Warp: https://www.freesound.org/people/harpoyume/sounds/86074/
 Buzz: https://www.freesound.org/people/dobroide/sounds/95817/
 Squish: https://www.freesound.org/people/PaulMorek/sounds/196725/
 All others: Original, Bo Brinkman (CC0 license)
+
+Art
+----
+Vine border: http://www.webdesignhot.com/free-vector-graphics/vines-frame-vector/

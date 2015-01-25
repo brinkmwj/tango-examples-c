@@ -55,6 +55,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
     private MediaController mediaControls;
     private MediaPlayer mediaPlayer;
     private ImageView imageView;
+    private ImageView vinesView;
     private AugmentedRealityView arViewRenderer;
     
     private float[] touchStartPos = new float[2];
@@ -118,6 +119,8 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
         	mediaControls = new MediaController(this);
         }
         imageView = (ImageView)findViewById(R.id.imageView1);
+        vinesView = (ImageView)findViewById(R.id.imageView2);
+        
         mediaPlayer = new MediaPlayer();
 		
         try {
@@ -153,6 +156,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 					introVideoView.stopPlayback();
 					introVideoView.setVisibility(View.INVISIBLE);
 					arView.setVisibility(View.VISIBLE);
+					vinesView.setVisibility(View.VISIBLE);
 					score.setVisibility(View.VISIBLE);
 					
 					arView.requestFocus();
@@ -171,6 +175,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				if(imageView.getVisibility() == View.VISIBLE){
 					arView.setVisibility(View.VISIBLE);
+					vinesView.setVisibility(View.VISIBLE);
 					imageView.setVisibility(View.INVISIBLE);
 					
 					arViewRenderer.startGame();
@@ -189,6 +194,7 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
 				// TODO Auto-generated method stub
 				introVideoView.setVisibility(View.INVISIBLE);
 				arView.setVisibility(View.VISIBLE);
+				vinesView.setVisibility(View.VISIBLE);
 				score.setVisibility(View.VISIBLE);
 				arView.requestFocus();
 
@@ -233,7 +239,8 @@ public class AugmentedRealityActivity extends Activity implements View.OnClickLi
                                 
                                 if(arViewRenderer.health == 0){
                                 	imageView.setVisibility(View.VISIBLE);
-                                	arView.setVisibility(View.VISIBLE);
+                                	arView.setVisibility(View.VISIBLE); //TODO: Should be invisible, but leads to bugs?
+                                	vinesView.setVisibility(View.INVISIBLE);
                                 	TangoJNINative.stopGame();
                                 	score.setText("GAME OVER\n" +
                                     		" Dodged: " + arViewRenderer.num_dodged + 
